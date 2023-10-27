@@ -16,6 +16,7 @@
                             <th scope="col">Title</th>
                             <th scope="col">Description</th>
                             <th scope="col">Type</th>
+                            <th scope="col">Technologies</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -27,6 +28,17 @@
                                 <td scope="col">{{ $project->title }}</td>
                                 <td scope="col">{{ $project->description }}</td>
                                 <td scope="col">{{ $project->type?->label }}</td>
+                                <td scope="col">
+                                    @forelse($project->technologies as $technology)
+                                        {{ $technology->label }} @unless ($loop->last)
+                                            ,
+                                        @else
+                                            .
+                                        @endunless
+                                    @empty
+                                        -
+                                    @endforelse
+                                </td>
                                 <td scope="col">
                                     <a class="btn btn-sm btn-success" href="{{ route('admin.projects.show', $project) }}">
                                         Dettaglio
