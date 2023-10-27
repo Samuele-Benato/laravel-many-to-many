@@ -27,26 +27,28 @@
 
                 <div class="col-8">
                     <div class="row">
-                        <div class="col-4">
-                            <label for="title" class="form-label">Titolo</label>
-                            <input type="text" id="title" name="title" class="form-control"
-                                placeholder="Project title" value="{{ old('title') }}">
-                            @error('title')
+                        <div class="col-6 my-2">
+                            <label for="title" class="form-label"><strong>Titolo</strong></label>
+                            <input type="text" id="title" name="title"
+                                class="form-control  @error('title') is-invalid @enderror" placeholder="Project title"
+                                value="{{ old('title') }}">
+                            {{-- @error('title')
                                 <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            @enderror --}}
                         </div>
 
-                        <div class="col-4">
-                            <label for="image" class="form-label">Immagine</label>
-                            <input type="text" id="image" name="image" class="form-control"
-                                placeholder="Project img url" value="{{ old('image') }}">
-                            @error('image')
+                        <div class="col-6 my-2">
+                            <label for="image" class="form-label"><strong>Immagine</strong></label>
+                            <input type="text" id="image" name="image"
+                                class="form-control @error('image') is-invalid @enderror" placeholder="Project img url"
+                                value="{{ old('image') }}">
+                            {{-- @error('image')
                                 <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            @enderror --}}
                         </div>
 
-                        <div class="col-4">
-                            <label for="type_id" class="form-label">Type</label>
+                        <div class="col-6 my-2">
+                            <label for="type_id" class="form-label"><strong>Type</strong></label>
                             <select name="type_id" id="type_id"
                                 class="form-select @error('type_id') is-invalid @enderror">
                                 <option value="">Seleziona il tipo</option>
@@ -56,20 +58,43 @@
                                     </option>
                                 @endforeach
                             </select>
-                            @error('type_id')
+                            {{-- @error('type_id')
                                 <div class="invalid-feedback">
                                     {{ $message }}
                                 </div>
-                            @enderror
+                            @enderror --}}
+                        </div>
+
+                        <div class="col-6 my-2">
+                            <label class="form-label"><strong>Technologies</strong></label>
+
+                            <div class="form-check @error('technologies') is-invalid @enderror p-0">
+                                @foreach ($technologies as $technology)
+                                    <input type="checkbox" id="technology-{{ $technology->id }}"
+                                        value="{{ $technology->id }}" name="technologies[]" class="form-check-control"
+                                        @if (in_array($technology->id, old('technologies', $project_technologies ?? []))) checked @endif>
+                                    <label for="technology-{{ $technology->id }}">
+                                        {{ $technology->label }}
+                                    </label>
+                                    <br>
+                                @endforeach
+                            </div>
+
+                            {{-- @error('technologies')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror --}}
                         </div>
 
                         <div class="col-12">
-                            <label for="description" class="form-label">Descrizione</label>
-                            <input type="textarea" id="description" name="description" class="form-control"
+                            <label for="description" class="form-label"><strong>Descrizione</strong></label>
+                            <input type="textarea" id="description" name="description"
+                                class="form-control @error('description') is-invalid @enderror"
                                 placeholder="Project description" value="{{ old('description') }}">
-                            @error('description')
+                            {{-- @error('description')
                                 <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            @enderror --}}
                         </div>
 
                     </div>
