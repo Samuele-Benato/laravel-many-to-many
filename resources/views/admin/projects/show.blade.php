@@ -8,15 +8,27 @@
             </div>
             <div class="col-8 col-lg-9 col-md-6 col-sm-12 d-flex align-items-center">
                 <div class="row g-3 ">
-                    <div class="col-4">
+                    <div class="col-3">
                         <strong>Id: </strong> {{ $project->id }}
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <strong>Title: </strong> {{ $project->title }}
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <strong>Type: </strong>
                         {{ $project->type ? $project->type->label : 'Nessun type' }}
+                    </div>
+                    <div class="col-3">
+                        <strong>Technologies: </strong>
+                        @forelse ($project->technologies as $technology)
+                            {{ $technology->label }} @unless ($loop->last)
+                                ,
+                            @else
+                                .
+                            @endunless
+                        @empty
+                            Nessuna technologia associata
+                        @endforelse
                     </div>
                     <div class="col-12">
                         <strong>Description: </strong> {{ $project->description }}
