@@ -15,8 +15,8 @@
             @csrf
             @method('PUT')
 
-            <div class="col-4">
-                <label for="title" class="form-label">Titolo</label>
+            <div class="col-4 my-2">
+                <label for="title" class="form-label"><strong>Titolo</strong></label>
                 <input type="text" id="title" name="title"
                     class="form-control @error('title') is-invalid @enderror"
                     value=" {{ old('title') ?? $project->title }}">
@@ -25,8 +25,8 @@
                 @enderror
             </div>
 
-            <div class="col-4">
-                <label for="image" class="form-label">Immagine</label>
+            <div class="col-4 my-2">
+                <label for="image" class="form-label"><strong>Immagine</strong></label>
                 <input type="text" id="image" name="image"
                     class="form-control @error('image') is-invalid @enderror"
                     value=" {{ old('image') ?? $project->image }}">
@@ -35,8 +35,8 @@
                 @enderror
             </div>
 
-            <div class="col-4">
-                <label for="type_id" class="form-label">Tipo</label>
+            <div class="col-4 my-2">
+                <label for="type_id" class="form-label"><strong>Tipo</strong></label>
                 <select name="type_id" id="type_id" class="form-select @error('type_id') is-invalid @enderror">
                     <option value="">Seleziona il tipo</option>
                     @foreach ($types as $type)
@@ -52,8 +52,30 @@
                 @enderror
             </div>
 
+            <div class="col-6 my-2">
+                <label class="form-label"><strong>Technologies</strong></label>
+
+                <div class="form-check @error('technologies') is-invalid @enderror p-0">
+                    @foreach ($technologies as $technology)
+                        <input type="checkbox" id="technology-{{ $technology->id }}" value="{{ $technology->id }}"
+                            name="technologies[]" class="form-check-control "
+                            @if (in_array($technology->id, old('technologies', $project_technologies ?? []))) checked @endif>
+                        <label for="technology-{{ $technology->id }}">
+                            {{ $technology->label }}
+                        </label>
+                        <br>
+                    @endforeach
+                </div>
+
+                @error('technologies')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                @enderror
+            </div>
+
             <div class="col-12">
-                <label for="description">Descrizione</label>
+                <label for="description"><strong>Descrizione</strong></label>
                 <textarea name="description" id="description" class="form-control" rows="3">{{ $project->description }}</textarea>
             </div>
             @error('description')
