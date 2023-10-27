@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Project;
 use App\Models\Type;
+use App\Models\Technology;
+use App\Http\Controllers\Admin\Arr;
 use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
@@ -29,10 +31,10 @@ class ProjectController extends Controller
      */
     public function create()
     {
-
-
+        $project = new Project;
+        $technologies = Technology::orderBy('label')->get();
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        return view('admin.projects.create', compact('types', 'project', 'technologies'));
     }
 
     /**
@@ -47,6 +49,9 @@ class ProjectController extends Controller
         $project = new Project;
         $project->fill($data);
         $project->save();
+
+        if (Arr::exists($data, "technologies"))
+            $project->technologies()->attach($data["technologies"]);
         return redirect()->route('admin.projects.show', $project);
     }
 
@@ -67,11 +72,15 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit(Request $request, Project $project)
     {
+        $data = $this->validation($request->all());
         $types = Type::all();
+        $technologies = Technology::orderBy('label')->get();
+        $project_technologies = $project->technologies->pluck('id')->toArray();
 
-        return view('admin.projects.edit', compact('project', 'types'));
+
+        return view('admin.projects.edit', compact('project', 'types', 'technologies', 'project_technologies'));
     }
 
     /**
@@ -83,8 +92,12 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        $data = $request->all();
+        $data = $this->validation($request->all());
         $project->update($data);
+        if (Arr::exists($data, "technologies"))
+            $project->technologies()->sync($data["technologies"]);
+        else
+            $project->technologies()->detach();
         return redirect()->route('admin.projects.show', $project);
     }
 
@@ -108,7 +121,8 @@ class ProjectController extends Controller
                 'title' => 'required|string|max:20',
                 'description' => "required",
                 "image" => "required",
-                "type_id" => "required"
+                "type_id" => "required",
+                "technologies" => 'nullable' | 'exists:tags,id',
             ],
             [
                 'title.required' => 'Il nome è obbligatorio',
@@ -120,6 +134,7 @@ class ProjectController extends Controller
                 'image.required' => 'L\'immagine è obbligatoria',
 
                 'type_id.required' => 'Il tipo è obbligatorio',
+                'technologies.exists' => 'le technologie inserite non sono valide',
 
             ]
         )->validate();
