@@ -19,12 +19,12 @@ class ProjectTechnologySeeder extends Seeder
     public function run(Faker $faker)
     {
         $projects = Project::all();
-        $tecnologies = Technology::all()->pluck('id')->toArray();
+        $technologies = Technology::all()->pluck('id')->toArray();
 
         foreach ($projects as $project) {
             $project
-                ->tecnologies()
-                ->attach($faker->randomElements($tecnologies, random_int(0, 3)));
+                ->technologies()
+                ->attach($faker->randomElements($technologies, random_int(0, 3)));
         }
     }
 }
