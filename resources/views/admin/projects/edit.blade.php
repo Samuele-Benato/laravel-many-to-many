@@ -3,7 +3,7 @@
 @section('content')
     <section class="container mt-5">
         <a class="btn btn-dark" href="{{ route('admin.projects.index') }}">
-            <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i>Torna ai projects
+            <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i>Torna ai progetti
         </a>
         <a class="btn btn-warning" href="{{ route('admin.projects.show', $project) }}">
             <i class="fa-solid fa-circle-info me-1" style="color: #000000;"></i>Torna al dettaglio

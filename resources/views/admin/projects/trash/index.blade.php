@@ -4,10 +4,11 @@
     <section class="container mt-5">
         <div class="row my-3">
             <div class="col">
-                <a class="btn btn-primary" href="{{ route('admin.projects.create') }}"><i class="fa-solid fa-plus mx-2"
-                        style="color: #ffffff;"></i>Crea un Progetto</a>
-                <a class="btn btn-danger" href="{{ route('admin.projects.trash.index') }}"> <i class="fa-solid fa-trash me-2"
-                        style="color: #ffffff;"></i>Vedi cestino</a>
+                <a class="btn btn-dark btn-sm" href="{{ route('admin.projects.index') }}">
+                    <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i> Torna ai progetti
+                </a>
+
+
             </div>
         </div>
         <div class="row">
@@ -45,10 +46,11 @@
                                 </td>
                                 <td scope="col">{{ $project->link }}</td>
                                 <td scope="col">
-                                    <a class="btn btn-sm btn-success w-100"
-                                        href="{{ route('admin.projects.show', $project) }}">
-                                        <i class="fa-solid fa-circle-info me-1" style="color: #ffffff;"></i> Dettaglio
-                                    </a>
+                                    <button class="btn btn-success btn-sm my-1 w-100" data-bs-toggle="modal"
+                                        data-bs-target="#restore-modal-{{ $project->id }}">
+                                        <i class="fa-solid fa-backward me-2" style="color: #ffffff;"></i>Recupera
+                                    </button>
+
                                     <button class="btn btn-danger btn-sm my-1 w-100" data-bs-toggle="modal"
                                         data-bs-target="#delete-modal-{{ $project->id }}">
                                         <i class="fa-solid fa-trash me-2" style="color: #ffffff;"></i>Elimina
@@ -57,7 +59,7 @@
                             </tr>
 
                         @empty
-                            <h3>Nessun project trovato</h3>
+                            <h3>Nessun progetto trovato</h3>
                         @endforelse
                     </tbody>
                 </table>
@@ -76,7 +78,8 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body text-start">
-                            Sei sicuro di voler eliminare la project {{ $project->title }} con ID
+                            Sei sicuro di voler eliminare <strong>definitivamente</strong> il progetto
+                            {{ $project->title }} con ID
                             {{ $project->id }}? <br />
                             L'operazione non è reversibile
                         </div>
@@ -85,11 +88,44 @@
                                 Annulla
                             </button>
 
-                            <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
+                            <form action="{{ route('admin.projects.trash.force-destroy', $project) }}" method="POST">
                                 @method('DELETE') @csrf
 
                                 <button type="submit" class="btn btn-danger">
                                     Elimina
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="restore-modal-{{ $project->id }}" tabindex="-1"
+                aria-labelledby="restore-modal-{{ $project->id }}-label" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="restore-modal-{{ $project->id }}-label">
+                                Conferma riptistino
+                            </h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-start">
+                            Sei sicuro di voler ripristinare il progetto
+                            {{ $project->title }} con ID
+                            {{ $project->id }}? <br />
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Annulla
+                            </button>
+
+                            <form action="{{ route('admin.projects.trash.restore', $project) }}" method="POST">
+                                @method('PATCH') @csrf
+
+                                <button type="submit" class="btn btn-success">
+                                    Ripristina
                                 </button>
                             </form>
                         </div>

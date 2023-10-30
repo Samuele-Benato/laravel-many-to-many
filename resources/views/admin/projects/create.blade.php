@@ -13,7 +13,7 @@
     @endif
     <section class="container mt-5">
         <a href="{{ route('admin.projects.index') }}" class="btn btn-dark">
-            <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i>Torna ai projects
+            <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i>Torna ai progetti
         </a>
 
         <h1 class="my-3">Crea un progetto</h1>

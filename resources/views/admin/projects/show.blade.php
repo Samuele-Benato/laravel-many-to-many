@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-12">
                         <a class="btn btn-dark btn-sm" href="{{ route('admin.projects.index') }}">
-                            <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i> Torna ai projects
+                            <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i> Torna ai progetti
                         </a>
                         <a class="btn btn-warning btn-sm" href= "{{ route('admin.projects.edit', $project) }}">
                             <i class="fa-solid fa-pen-to-square me-1" style="color: #000000;"></i> Modifica

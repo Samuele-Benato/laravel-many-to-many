@@ -20,7 +20,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::paginate(5);
+        $projects = Project::orderByDesc('id')->paginate(5);
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -109,6 +109,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+
         $project->delete();
         return redirect()->route('admin.projects.index');
     }
@@ -142,5 +143,43 @@ class ProjectController extends Controller
         )->validate();
 
         return $validator;
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function trash()
+    {
+        $projects = Project::orderByDesc('id')->onlyTrashed()->paginate(5);
+        return view('admin.projects.trash.index', compact('projects'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDestroy(int $id)
+    {
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->technologies()->detach();
+        $project->delete();
+        return redirect()->route('admin.projects.trash.index');
+    }
+
+    /**
+     * restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(int $id)
+    {
+        $project = Project::onlyTrashed()->findOrFail($id);
+        $project->restore();
+        return redirect()->route('admin.projects.trash.index');
     }
 }
