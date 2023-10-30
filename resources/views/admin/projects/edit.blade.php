@@ -3,10 +3,10 @@
 @section('content')
     <section class="container mt-5">
         <a class="btn btn-dark" href="{{ route('admin.projects.index') }}">
-            Torna ai projects
+            <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i>Torna ai projects
         </a>
         <a class="btn btn-warning" href="{{ route('admin.projects.show', $project) }}">
-            Torna al dettaglio
+            <i class="fa-solid fa-circle-info me-1" style="color: #000000;"></i>Torna al dettaglio
         </a>
 
         <h1 class="my-3">Modifica il progetto</h1>
@@ -52,8 +52,8 @@
                 @enderror
             </div>
 
-            <div class="col-6 my-2">
-                <label class="form-label"><strong>Technologies</strong></label>
+            <div class="col-4 my-2">
+                <label class="form-label"><strong>Tecnologia</strong></label>
 
                 <div class="form-check @error('technologies') is-invalid @enderror p-0">
                     @foreach ($technologies as $technology)
@@ -74,6 +74,13 @@
                 @enderror
             </div>
 
+            <div class="col-8">
+                <label for="link"><strong>Link</strong></label>
+                <textarea name="link" id="link" class="form-control" rows="1">{{ $project->link }}</textarea>
+            </div>
+            @error('link')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
             <div class="col-12">
                 <label for="description"><strong>Descrizione</strong></label>
                 <textarea name="description" id="description" class="form-control" rows="3">{{ $project->description }}</textarea>

@@ -4,7 +4,8 @@
     <section class="container mt-5">
         <div class="row my-3">
             <div class="col">
-                <a class="btn btn-primary" href="{{ route('admin.projects.create') }}">Crea un Progetto</a>
+                <a class="btn btn-primary" href="{{ route('admin.projects.create') }}"><i class="fa-solid fa-plus mx-2"
+                        style="color: #ffffff;"></i>Crea un Progetto</a>
             </div>
         </div>
         <div class="row">
@@ -13,10 +14,11 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Type</th>
-                            <th scope="col">Technologies</th>
+                            <th scope="col">Titolo</th>
+                            <th scope="col">Descrizione</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Tecnologie</th>
+                            <th scope="col">Link</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -39,13 +41,15 @@
                                         -
                                     @endforelse
                                 </td>
+                                <td scope="col">{{ $project->link }}</td>
                                 <td scope="col">
-                                    <a class="btn btn-sm btn-success" href="{{ route('admin.projects.show', $project) }}">
-                                        Dettaglio
+                                    <a class="btn btn-sm btn-success w-100"
+                                        href="{{ route('admin.projects.show', $project) }}">
+                                        <i class="fa-solid fa-circle-info me-1" style="color: #ffffff;"></i> Dettaglio
                                     </a>
-                                    <button class="btn btn-danger btn-sm my-1" data-bs-toggle="modal"
+                                    <button class="btn btn-danger btn-sm my-1 w-100" data-bs-toggle="modal"
                                         data-bs-target="#delete-modal-{{ $project->id }}">
-                                        Elimina
+                                        <i class="fa-solid fa-trash me-2" style="color: #ffffff;"></i>Elimina
                                     </button>
                                 </td>
                             </tr>

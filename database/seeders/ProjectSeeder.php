@@ -28,7 +28,8 @@ class ProjectSeeder extends Seeder
             $project = new Project;
             $project->type_id = $type_id;
             $project->title = $faker->firstNameMale();
-            $project->description = $faker->paragraph(8);
+            $project->link = $faker->url;
+            $project->description = $faker->paragraph(2);
             $project->image = "https://picsum.photos/300/200";
             $project->save();
         }

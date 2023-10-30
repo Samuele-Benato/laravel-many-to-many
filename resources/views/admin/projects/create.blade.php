@@ -13,7 +13,7 @@
     @endif
     <section class="container mt-5">
         <a href="{{ route('admin.projects.index') }}" class="btn btn-dark">
-            Torna ai projects
+            <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i>Torna ai projects
         </a>
 
         <h1 class="my-3">Crea un progetto</h1>
@@ -21,11 +21,7 @@
         <form action="{{ route('admin.projects.store') }}" method="POST">
             @csrf
             <div class="row">
-                <div class="col-4">
-                    <img src="" id="preview-image" class="img-fluid" alt="image">
-                </div>
-
-                <div class="col-8">
+                <div class="col">
                     <div class="row">
                         <div class="col-6 my-2">
                             <label for="title" class="form-label"><strong>Titolo</strong></label>
@@ -48,7 +44,7 @@
                         </div>
 
                         <div class="col-6 my-2">
-                            <label for="type_id" class="form-label"><strong>Type</strong></label>
+                            <label for="type_id" class="form-label"><strong>Tipo</strong></label>
                             <select name="type_id" id="type_id"
                                 class="form-select @error('type_id') is-invalid @enderror">
                                 <option value="">Seleziona il tipo</option>
@@ -66,7 +62,7 @@
                         </div>
 
                         <div class="col-6 my-2">
-                            <label class="form-label"><strong>Technologies</strong></label>
+                            <label class="form-label"><strong>Tecnologia</strong></label>
 
                             <div class="form-check @error('technologies') is-invalid @enderror p-0">
                                 @foreach ($technologies as $technology)
@@ -87,7 +83,16 @@
                             @enderror --}}
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-6">
+                            <label for="link" class="form-label"><strong>Link</strong></label>
+                            <input type="textarea" id="link" name="link"
+                                class="form-control @error('link') is-invalid @enderror" placeholder="Project link"
+                                value="{{ old('link') }}">
+                            {{-- @error('link')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror --}}
+                        </div>
+                        <div class="col-6">
                             <label for="description" class="form-label"><strong>Descrizione</strong></label>
                             <input type="textarea" id="description" name="description"
                                 class="form-control @error('description') is-invalid @enderror"

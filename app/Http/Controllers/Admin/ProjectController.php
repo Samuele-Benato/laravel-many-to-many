@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Type;
 use App\Models\Technology;
-use App\Http\Controllers\Admin\Arr;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
@@ -72,9 +72,9 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, Project $project)
+    public function edit(Project $project)
     {
-        $data = $this->validation($request->all());
+
         $types = Type::all();
         $technologies = Technology::orderBy('label')->get();
         $project_technologies = $project->technologies->pluck('id')->toArray();
@@ -119,22 +119,24 @@ class ProjectController extends Controller
             $data,
             [
                 'title' => 'required|string|max:20',
-                'description' => "required",
+                'link' => "required",
                 "image" => "required",
                 "type_id" => "required",
-                "technologies" => 'nullable' | 'exists:tags,id',
+                "technologies" => 'exists:technologies,id|nullable',
+                'description' => "required",
             ],
             [
                 'title.required' => 'Il nome è obbligatorio',
                 'title.string' => 'Il nome deve essere una stringa',
                 'title.max' => 'Il nome deve massimo di 20 caratteri',
 
-                'description.required' => 'La descrizione è obbligatoria',
+                'link.required' => 'il link è obbligatorio',
 
                 'image.required' => 'L\'immagine è obbligatoria',
 
                 'type_id.required' => 'Il tipo è obbligatorio',
                 'technologies.exists' => 'le technologie inserite non sono valide',
+                'description.required' => 'La descrizione è obbligatoria',
 
             ]
         )->validate();
