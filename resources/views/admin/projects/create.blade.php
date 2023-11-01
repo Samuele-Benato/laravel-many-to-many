@@ -18,7 +18,7 @@
 
         <h1 class="my-3">Crea un progetto</h1>
 
-        <form action="{{ route('admin.projects.store') }}" method="POST">
+        <form action="{{ route('admin.projects.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col">
@@ -35,7 +35,7 @@
 
                         <div class="col-6 my-2">
                             <label for="image" class="form-label"><strong>Immagine</strong></label>
-                            <input type="text" id="image" name="image"
+                            <input type="file" id="image" name="image"
                                 class="form-control @error('image') is-invalid @enderror" placeholder="Project img url"
                                 value="{{ old('image') }}">
                             {{-- @error('image')

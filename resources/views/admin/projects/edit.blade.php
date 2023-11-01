@@ -11,7 +11,8 @@
 
         <h1 class="my-3">Modifica il progetto</h1>
 
-        <form action="{{ route('admin.projects.update', $project) }}" method="POST" class="row g-3">
+        <form action="{{ route('admin.projects.update', $project) }}" method="POST" class="row g-3"
+            enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -27,9 +28,9 @@
 
             <div class="col-4 my-2">
                 <label for="image" class="form-label"><strong>Immagine</strong></label>
-                <input type="text" id="image" name="image"
-                    class="form-control @error('image') is-invalid @enderror"
-                    value=" {{ old('image') ?? $project->image }}">
+                <img class="img-fluid" src="{{ asset('/storage/' . $project->image) }}" alt="project img"
+                    @error('image') is-invalid @enderror>
+                value=" {{ old('image') ?? $project->image }}">
                 @error('image')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
