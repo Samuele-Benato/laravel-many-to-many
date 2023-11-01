@@ -10,6 +10,7 @@ use App\Models\Type;
 use App\Models\Technology;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -48,10 +49,14 @@ class ProjectController extends Controller
         $data = $this->validation($request->all());
         $project = new Project;
         $project->fill($data);
-        $project->save();
 
-        if (Arr::exists($data, "technologies"))
+        if (Arr::exists($data, "image")) {
+            $project->image = Storage::put("uploads/projects/image", $data['image']);
+        }
+        $project->save();
+        if (Arr::exists($data, "technologies")) {
             $project->technologies()->attach($data["technologies"]);
+        }
         return redirect()->route('admin.projects.show', $project);
     }
 
@@ -121,7 +126,7 @@ class ProjectController extends Controller
             [
                 'title' => 'required|string|max:20',
                 'link' => "required",
-                "image" => "required",
+                "image" => "nullable|image|max:512",
                 "type_id" => "required",
                 "technologies" => 'exists:technologies,id|nullable',
                 'description' => "required",
@@ -133,7 +138,9 @@ class ProjectController extends Controller
 
                 'link.required' => 'il link è obbligatorio',
 
-                'image.required' => 'L\'immagine è obbligatoria',
+                'image.image' => 'L\'immagine è obbligatoria',
+                'image.max' => 'L\'immagine deve avere una dimensione inferiore a 512KB',
+
 
                 'type_id.required' => 'Il tipo è obbligatorio',
                 'technologies.exists' => 'le technologie inserite non sono valide',
@@ -166,6 +173,9 @@ class ProjectController extends Controller
     {
         $project = Project::onlyTrashed()->findOrFail($id);
         $project->technologies()->detach();
+        if ($project->$image) {
+            Storage::delete($project->$image);
+        }
         $project->delete();
         return redirect()->route('admin.projects.trash.index');
     }
