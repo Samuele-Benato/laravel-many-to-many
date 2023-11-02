@@ -3,11 +3,14 @@
 @section('content')
     <section class="container mt-5">
         <div class="row my-3">
-            <div class="col">
-                <a class="btn btn-primary" href="{{ route('admin.projects.create') }}"><i class="fa-solid fa-plus mx-2"
-                        style="color: #ffffff;"></i>Crea un Progetto</a>
-                <a class="btn btn-danger" href="{{ route('admin.projects.trash.index') }}"> <i class="fa-solid fa-trash me-2"
-                        style="color: #ffffff;"></i>Vedi cestino</a>
+            <div class="col d-flex align-items-center">
+                <h1 class="my-3 fw-bold">Lista progetti :</h1>
+                <div class="ms-auto">
+                    <a class="btn btn-primary" href="{{ route('admin.projects.create') }}"><i class="fa-solid fa-plus mx-2"
+                            style="color: #ffffff;"></i>Crea un Progetto</a>
+                    <a class="btn btn-danger" href="{{ route('admin.projects.trash.index') }}"> <i
+                            class="fa-solid fa-trash me-2" style="color: #ffffff;"></i>Vedi cestino</a>
+                </div>
             </div>
         </div>
         <div class="row">

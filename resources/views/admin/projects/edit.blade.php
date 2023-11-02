@@ -2,14 +2,19 @@
 
 @section('content')
     <section class="container mt-5">
-        <a class="btn btn-dark" href="{{ route('admin.projects.index') }}">
-            <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i>Torna ai progetti
-        </a>
-        <a class="btn btn-warning" href="{{ route('admin.projects.show', $project) }}">
-            <i class="fa-solid fa-circle-info me-1" style="color: #000000;"></i>Torna al dettaglio
-        </a>
-
-        <h1 class="my-3">Modifica il progetto</h1>
+        <div class="row my-3">
+            <div class="col d-flex align-items-center">
+                <h2 class="my-3 fw-bold">Modifica progetto :</h2>
+                <div class="ms-auto">
+                    <a class="btn btn-dark" href="{{ route('admin.projects.index') }}">
+                        <i class="fa-regular fa-circle-left me-1" style="color: #fafafa;"></i>Torna ai progetti
+                    </a>
+                    <a class="btn btn-warning" href="{{ route('admin.projects.show', $project) }}">
+                        <i class="fa-solid fa-circle-info me-1" style="color: #000000;"></i>Torna al dettaglio
+                    </a>
+                </div>
+            </div>
+        </div>
 
         <form action="{{ route('admin.projects.update', $project) }}" method="POST" class="row g-3"
             enctype="multipart/form-data">
@@ -26,14 +31,30 @@
                 @enderror
             </div>
 
-            <div class="col-4 my-2">
-                <label for="image" class="form-label"><strong>Immagine</strong></label>
-                <img class="img-fluid" src="{{ asset('/storage/' . $project->image) }}" alt="project img"
-                    @error('image') is-invalid @enderror>
-                value=" {{ old('image') ?? $project->image }}">
-                @error('image')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <div class="col-8">
+                <label for="link"><strong>Link</strong></label>
+                <textarea name="link" id="link" class="form-control" rows="1">{{ $project->link }}</textarea>
+            </div>
+            @error('link')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+
+            <div class="col-12 my-2">
+                <div class="row">
+                    <div class="col-4">
+                        <img class="img-fluid" src="{{ asset('/storage/' . $project->image) }}" alt="project img"
+                            id="imagePreview">
+                    </div>
+
+                    <div class="col-8">
+                        <label for="image" class="form-label"><strong>Immagine</strong></label>
+                        <input type="file" name="image" class="form-control" id="image"
+                            @error('image') is-invalid @enderror value=" {{ old('image') ?? $project->image }}">
+                        @error('image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
             </div>
 
             <div class="col-4 my-2">
@@ -75,13 +96,7 @@
                 @enderror
             </div>
 
-            <div class="col-8">
-                <label for="link"><strong>Link</strong></label>
-                <textarea name="link" id="link" class="form-control" rows="1">{{ $project->link }}</textarea>
-            </div>
-            @error('link')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+
             <div class="col-12">
                 <label for="description"><strong>Descrizione</strong></label>
                 <textarea name="description" id="description" class="form-control" rows="3">{{ $project->description }}</textarea>
@@ -94,4 +109,18 @@
             </div>
         </form>
     </section>
+@endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        const inputFileElement = document.getElementById('image');
+        const imagePreview = document.getElementById('image_preview');
+
+        if (!imagePreview.getAttribute('src') || imagePreview.getAttribute('src') == "http: //127.0.0.1:8000/storage")
+
+            inputFileElement.addEventListener('change', function() {
+                const [file] = this.files;
+                imagePreview.src = URL.createObjectURL(file);
+            })
+    </script>
 @endsection

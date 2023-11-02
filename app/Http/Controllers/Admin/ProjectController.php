@@ -50,7 +50,7 @@ class ProjectController extends Controller
         $project = new Project;
         $project->fill($data);
 
-        if (Arr::exists($data, "image")) {
+        if ($request->hasFile('image')) {
             $project->image = Storage::put("uploads/projects/image", $data['image']);
         }
         $project->save();
@@ -99,6 +99,15 @@ class ProjectController extends Controller
     {
         $data = $this->validation($request->all());
         $project->update($data);
+
+        if ($request->hasFile('image')) {
+            if ($project->image) {
+                Storage::delete($project->image);
+            }
+            $image_path = Storage::put('uploads/projects/image', $data['image']);
+            $project->image = $image_path;
+        }
+
         if (Arr::exists($data, "technologies"))
             $project->technologies()->sync($data["technologies"]);
         else
@@ -173,8 +182,8 @@ class ProjectController extends Controller
     {
         $project = Project::onlyTrashed()->findOrFail($id);
         $project->technologies()->detach();
-        if ($project->$image) {
-            Storage::delete($project->$image);
+        if ($project->image) {
+            Storage::delete($project->image);
         }
         $project->delete();
         return redirect()->route('admin.projects.trash.index');

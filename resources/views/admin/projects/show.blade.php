@@ -2,6 +2,7 @@
 
 @section('content')
     <section class="container mt-5">
+        <h2 class="my-3 fw-bold">Dettaglio progetto : </h2>
         <div class="row g-3">
             <div class="col-4 col-lg-3 col-md-6 col-sm-12 ">
                 <img class="img-fluid" src="{{ asset('/storage/' . $project->image) }}" alt="project img">
